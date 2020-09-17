@@ -11,15 +11,19 @@ def wrap64(string):
 bitsknownint = 0
 
 for line in fileinput.input():
+    print("This is the line: ", line)
     if len(line) > 10:
         firstline = line
         if (len(line) % 2 == 0):
             firstline = '0' + line
         continue
     x, y = map(int, line.split())
+    print("X and Y: ",hex(x),hex(y))
     hint = ((x - 1) << 7) | (y - 32)
+    print(hint)
     tryabit = hint & 1
     i = hint >> 1
+    print(i)
 # All you have to do is figure out what YYY and ZZZ should be...
     if (YYY):
         ZZZ
