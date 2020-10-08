@@ -8,7 +8,7 @@ pcap = pyshark.FileCapture(sys.argv[1])
 for p in pcap:
     if p.transport_layer == 'UDP':
         if (int(p.udp.dstport) == 69):
-            print(p)
+            if( (tcp.flags.syn == 1) and (tcp.flags.)) 
 
                 
             
