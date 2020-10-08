@@ -11,8 +11,8 @@
 186.148.158.1
 # Two raw sequence numbers tied for being the most common raw sequence numbers in this
 # pcap.  What is the larger of these two numbers? 
-1036477224
+3714604571
 # How many of the scanned machines were listening on port 22, i.e., it was open?
 5
 # What machine looks like it's up and running a tfpt server on a UDP port?
-N
+224.170.250.3
