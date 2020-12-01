@@ -1,0 +1,31 @@
+10320-bin,1,"TODO this file has become a mess, refactor it"
+10320-bin,2,"Posted on June 25, 2018"
+10320-bin,3,text와 배경색이 검정색으로 되어있어 글씨가 보이지 않지만 드래그 해서 복사하면 값을 알 수 있다.
+10320-bin,4,OCR IS COOL! (misc)
+10320-bin,5,이미지 파일이 주어지는데 메일의 내용 중 VMY{...} 가 플래그 형식과 비슷하여 Caesar 복호화를 했더니 플래그가 나왔다.
+10320-bin,6,unzip 으로 압축을 여러번 풀면 또 다른 방식으로 압축되어 있다
+10320-bin,7,ico 파일을 hex editor 로 열어보면 압축 파일이 숨겨져 있는 것을 확인할 수 있다.
+10320-bin,8,CTF{SOmething-CATastr0phic}
+10320-bin,9,2) Read EULA/patch notes
+10320-bin,10,3) Quit
+10320-bin,11,The following patchnotes were found:
+10320-bin,12,Which patchnotes should be shown?
+10320-bin,13,user 라는 사용자명을 확인했으면 user의 홈 디렉토리에서 플래그를 읽는다.
+10320-bin,14,2) Read EULA/patch notes
+10320-bin,15,3) Quit
+10320-bin,16,The following patchnotes were found:
+10320-bin,17,Which patchnotes should be shown?
+10320-bin,18,xor 연산을 해보면
+10320-bin,19,"quit, version, shell, echo, debug 명령어를 사용할 수 있는데, 이 중에서 shell 명령어를 입력했을 때 shell_enabled 가 1이면 debug_shell()을 호출하고, debug_shell() 에서는 system('/bin/sh') 를 호출한다."
+10320-bin,20,명령어를 입력받을 때 길이 검사를 하지 않아 BOF 취약점이 발생하기 때문에 debug_shell() 함수의 주소를 스프레이해서 return address 를 덮으면 쉘을 획득할 수 있다.
+10320-bin,21,write-up
+10320-bin,22,Check if any share-links are active
+10320-bin,23,- Share on Twitter
+10320-bin,24,- Share on Facebook
+10320-bin,25,- Share on LinkedIn
+10320-bin,26,Please enable JavaScript to view the comments powered by Disqus.
+10320-bin,27,Email me
+10320-bin,28,"Please don't remove this, keep my open source work credited :)"
+10320-bin,29,doing something a bit funky here because I want to be careful not to include JQuery twice!
+10320-bin,30,doing something a bit funky here because I want to be careful not to include JQuery twice!
+10320-bin,31,doing something a bit funky here because I want to be careful not to include JQuery twice!

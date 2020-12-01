@@ -1,0 +1,18 @@
+1840-bin,1,Compare,
+1840-bin,2,Create new team,
+1840-bin,3,Get team members,
+1840-bin,4,Contact us,
+1840-bin,5,Sign in,
+1840-bin,6,"We are given a cyphertext encrypted with AES-CBC, IV and the beginning of the plaintext",(I)
+1840-bin,7,The task is to mangle it so that after decryption the beginning of the plaintext would begin with another given string.All bits that have to be changed are in the 1st block (128 bit),(I) 
+1840-bin,8,"in cbc mode the first block is encrypted this way:CT[0] = enc(PT[0] ^ IV)and decrypted:PT[0] = dec(CT[0]) ^ IVSo if the n-th bit of IV is changed, the n-th bit of PT is changed too",(I)
+1840-bin,9,We can calculate IV` = IV ^ PT[0] ^ PT`[0],(A) 8
+1840-bin,10,And if we provide the user with IV` instead of IV he will get PT` instead of PT after decrypting.The flag is IV`,(I) 9
+1840-bin,11,Go to www.addthis.com/dashboard to customize your tools,
+1840-bin,12,Sign in with,
+1840-bin,13,I don't remember,
+1840-bin,14,Follow @CTFtime,
+1840-bin,15,© 2012 — 2020 CTFtime team.All tasks and writeups are copyrighted by their respective authors,
+1840-bin,16,Hosting provided by Transdata.,
+1840-bin,17,"<script src=""/static/bootstrap/js/bootstrap-scrollspy.js""></script>",
+1840-bin,18,"<script src=""/static/bootstrap/js/bootstrap-carousel.js""></script>",

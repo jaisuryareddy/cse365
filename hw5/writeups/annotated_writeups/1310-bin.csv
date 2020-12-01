@@ -1,0 +1,27 @@
+1310-bin,1,Skip to content,
+1310-bin,2,Skip to navigation,
+1310-bin,3,5h311 (reverse 200),
+1310-bin,4,Category: reverseEvent: No cON Name CTF Finals 2014Description: Connect to the service listening at 10.210.8.1:6969 and get the flag.Solution: We have x86 ELF binary (attached to this writeup),(I)
+1310-bin,5,"If you open it in disassembler, you will find that it's obfuscated, but strings aren't encrypted:So, we have something like command interpreter..",(I) 4
+1310-bin,6,"but the most intresting string is, of course, ""flag.txt""",
+1310-bin,7,"Now take a look into function, where this string are used",
+1310-bin,8,It's sub_080488D0 which we can call on_cat,
+1310-bin,9,"Because the only place, where it's used is:Now it's time to understand obfuscation method:\\some code ...",
+1310-bin,10,if ( curCmdCode == -2004157957 ) {,
+1310-bin,11,"""error: cannot open flag.txt\n"",",
+1310-bin,12,"\\more code...The original code was divided into blocks, which were divided between states of finite automata",
+1310-bin,13,Each state is defined by current state (curCmdCode),(I)
+1310-bin,14,The next state is defined by variable nextCmdCode,(I)
+1310-bin,15,The only thing we should do to deobfuscate is to find all possible ways in given finite automata,
+1310-bin,16,But there is an earsier way: in function named on_cat we can notice one strange thing:v2 = 799129272;,(I)
+1310-bin,17,"nextCmdCode = v2;this means that next execution flow depends of the value of global variable dword_804E894, which is changed to value 1 only in one place: function, named on_put",(I)
+1310-bin,18,"Now take a look into function on_put at address 0x0804AC80.This function checks elements of global array globalVars at address 0x0804E8A8 (it's used to store pairs name&value, entered by user), where first 256 bytes is a name of variable and next 256 is suggested value or vice versa",(I)
+1310-bin,19,"So lets try to create variable in global array globalVar with name ""puts"" and value ""printf"" or  vice versa, then type ""puts"" and ""cat flag.txt""...",(A) 18
+1310-bin,20,and we will get the flag.I didn't logging my actions during the ctf so the next code is just a local test:>ncat 192.168.249.144 6969,(A) 18
+1310-bin,21,#                 Welcome to 5h311.nsa.gov                  #,
+1310-bin,22,#        All connections are monitored and recorded         #,
+1310-bin,23,# Disconnect IMMEDIATELY if you are not an authorized user! #,
+1310-bin,24,$ set puts printf,
+1310-bin,25,$ puts,
+1310-bin,26,#So the task is done and no deobfuscation has been really needed.Attachments:  5h311.zip,
+1310-bin,27,Sign in,

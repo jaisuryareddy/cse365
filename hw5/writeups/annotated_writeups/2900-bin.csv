@@ -1,0 +1,11 @@
+2900-bin,1,Write-Ups,
+2900-bin,2,"After downloading a copy of the video file, we are disappointed to find that there are no cats(😖)!  But an especially diligent zombie caught something that looks like two lines of text in the first second or so of scrobbling the video",
+2900-bin,3,"With the brackground noise changing each frame, we realized that we could diff the frames to get some idea of what the static content is.",(I)
+2900-bin,4,"Here, you can clearly see the two lines of text",(I)
+2900-bin,5,Searching on the lower line turns up a video that is the cover file.,(I)
+2900-bin,6,"Kitty! :D 😺😺😺 At this point, we grabbed a raw 360p copy of this video",(I)
+2900-bin,7,Then using ffmpeg we extracted frames from each video.,(A) 6
+2900-bin,8,"The first pass attempt was to try to go frame by frame between the two videos, diffing (XOR) to cancel out the cover file (Maru) presumably leaving us with just the data containing the flag: this does in fact remove the cover file, unfortunately what is left is static","(A) 6, 7"
+2900-bin,9,"The next pass was to iterate over the provided video's frames in pairs ((1,2),(2,3),...(n-1,n)) diffing the pairs.","(A) 8, 7"
+2900-bin,10,"for i in `seq 2 9`; do convert stego/00$(expr $i - 1).jpg stego/00$i.jpg -fx ""(((255u)&(255(1-v)))|((255(1-u))&(255v)))/255"" noncover/00$i.jpg; done",(A) 9 
+2900-bin,11,007.jpg (stego/006.jpg ^ stego/007.jpg) has text in the flag format in the bottom of the frame.,

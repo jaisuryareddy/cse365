@@ -1,0 +1,108 @@
+7670-bin,1,"To prevent page flashing, the optimizely JS needs to be loaded in the",
+7670-bin,2,<head> tag before the DOM renders,
+7670-bin,3,Skip to content,
+7670-bin,4,Sign up,
+7670-bin,5,Hosting,
+7670-bin,6,Explore,
+7670-bin,7,Explore GitHub →,
+7670-bin,8,Learn & contribute,
+7670-bin,9,Learning Lab,
+7670-bin,10,Connect with others,
+7670-bin,11,Compare plans,
+7670-bin,12,Jump to,
+7670-bin,13,Jump to,
+7670-bin,14,Jump to,
+7670-bin,15,Sign in,
+7670-bin,16,Sign up,
+7670-bin,17,Watch,
+7670-bin,18,Fork,
+7670-bin,19,Pull requests,
+7670-bin,20,Pull requests,
+7670-bin,21,Dismiss,
+7670-bin,22,Join GitHub today,
+7670-bin,23,"GitHub is home to over 50 million developers working together to host and review code, manage projects, and build software together.",
+7670-bin,24,Sign up,
+7670-bin,25,GitHub is where the world builds software,
+7670-bin,26,"Millions of developers and companies build, ship, and maintain their software on GitHub — the largest and most advanced development platform in the world.",
+7670-bin,27,Sign up for free,
+7670-bin,28,Dismiss,
+7670-bin,29,Go to file,
+7670-bin,30,Go to file,
+7670-bin,31,Go to line,
+7670-bin,32,Cannot retrieve contributors at this time,
+7670-bin,33,Blame,
+7670-bin,34,The challenge provided access to a server via ssh login as an unprivileged user.,
+7670-bin,35,"Logging in to the server, we see a single binary in the user's home directory:",
+7670-bin,36,I didn't even know you could have executable but non-readable files on Linux.,
+7670-bin,37,"But, to my surprise, executing it works just fine!",(I)
+7670-bin,38,Nothing interesting happens though.,(I) 37
+7670-bin,39,We need to find out more about what that binary does.,
+7670-bin,40,"Unfortunately, just as the permissions say, we really cannot read it:",(I)
+7670-bin,41,cat: ./open-design: Permission denied,(A) 40
+7670-bin,42,"Before we can progress any further, we need to find a way to get access to the binary.",(I)
+7670-bin,43,Gathering knowledge: dumping the binary,
+7670-bin,44,"While we cannot read the binary from the file system, Linux must load it into memory for execution.",(I)
+7670-bin,45,"Therefore, if we manage to inject code into our target process, we can dump the memory content and retrieve the binary this way.",(I) 44
+7670-bin,46,"Luckily for us, the program is dynamically linked (a quick env LD_DEBUG=all ./open-design confirms that it loads dynamic libraries).",(I) 45
+7670-bin,47,This means that function references are resolved at run-time.,(I) 46
+7670-bin,48,We can make the linker look for symbols in our own library first by using LD_PRELOAD=./our-own-library.so.,(I)
+7670-bin,49,"Any symbol we define in our own library will take precedence over symbols defined in other libraries, so we can effectively replace any dynamically linked function with our own implementation.",
+7670-bin,50,What would be a good target to replace?,
+7670-bin,51,"During the CTF, I used some other targets first but in the end I settled on __libc_start_main.",(A) 48
+7670-bin,52,The function is called early during program startup to setup everything and then launch into the real main.,(I) 51
+7670-bin,53,"Overriding this function gives us a lot of control, while at the same time not destroying normal function of the program, because we can just call the original __libc_start_main at the end of our hook.",
+7670-bin,54,"To dump the binary, we can override the main function pointer that is passed to __libc_start_main to run our own function as if it was the main function of the binary:",(A) 52
+7670-bin,55,// our own implementation of __libc_start_main (I copied the function signature from Google search results :),
+7670-bin,56,"// lookup the original __libc_start_main (yes, c function pointer syntax is weird)",
+7670-bin,57,"// call original __libc_start_main, but replace ""main"" with our custom implementation",
+7670-bin,58,"(Note: to compile this code, you need to #define _GNU_SOURCE before #include <dlfcn.h> or the RTLD_NEXT constant is not defined)",
+7670-bin,59,"In our custom main, we dump the binary.",
+7670-bin,60,"To figure out which part of the memory to dump, we read the file /proc/self/maps, which tells us which",
+7670-bin,61,part of the binary is loaded at which point in memory:,
+7670-bin,62,// parse /proc/self/maps and dump it,
+7670-bin,63,// skip mappings which don't belong to open design,
+7670-bin,64,"if(!strstr(line, ""open-design"")) continue;",
+7670-bin,65,// parse start/end address from line,
+7670-bin,66,// dump to file,
+7670-bin,67,Then we compile this code into a shared library and inject it with LD_PRELOAD:,
+7670-bin,68,$ gcc -shared -fPIC -Wall dumper.c -o dumper.so,
+7670-bin,69,dumped process!,
+7670-bin,70,"If everything goes well, we should end up with three files dump.400000, dump.600000, dump.601000 in the current directory.",(I)
+7670-bin,71,Reversing: analyzing the binary,(A)
+7670-bin,72,"If we take a look at the files we've got, we find that the binary was mapped at address 0x600000 since that contains the elf headers:",(I) 71
+7670-bin,73,"dump.600000: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, missing section headers",(I) 72
+7670-bin,74,"It is missing the section headers, because those are located at the end of the binary.",
+7670-bin,75,But the binary is small enough that dump.601000 which is a segment directly after dump.600000 contains the section headers.,(I) 73
+7670-bin,76,We can just cat both dumps together to obtain an almost complete binary:,(A) 75
+7670-bin,77,Now we can load the binary in IDA and take a look at the main function:,
+7670-bin,78,So the binary really didn't do anything at all.,
+7670-bin,79,"But, looking at the imported symbols of the binary we notice that it has references to puts and rand, which is suspicious for a binary without any code.",
+7670-bin,80,"Following those references, we find a hidden function at address 0x400666:",(A) 75
+7670-bin,81,signed int seed; // [sp+10h] [bp-50h]@1,
+7670-bin,82,signed int k; // [sp+14h] [bp-4Ch]@8,
+7670-bin,83,"The code first computes a seed, then compares the argument to some other string and finally prints out a string generated with rand().",
+7670-bin,84,It is likely that the string printed out at the end is the flag.,
+7670-bin,85,"Because the generated string does not depend on the argument value at all, we can pass """" for the argument to avoid the check.",(I)
+7670-bin,86,"To call the function, we can re-use the code from our dumper for replacing main, this time calling the function instead of dumping the binary:",
+7670-bin,87,Running that the same way as before using LD_PRELOAD we obtain the flag.,(A) 85
+7670-bin,88,Help,
+7670-bin,89,You can't perform that action at this time.,
+7670-bin,90,You signed in with another tab or window,
+7670-bin,91,Reload to refresh your session.,
+7670-bin,92,You signed out in another tab or window,
+7670-bin,93,Reload to refresh your session.,
+7670-bin,94,We use optional third-party analytics cookies to understand how you use GitHub.com so we can build better products.,
+7670-bin,95,Learn more.,
+7670-bin,96,Accept,
+7670-bin,97,Reject,
+7670-bin,98,We use optional third-party analytics cookies to understand how you use GitHub.com so we can build better products.,
+7670-bin,99,You can always update your selection by clicking Cookie Preferences at the bottom of the page.,
+7670-bin,100,"For more information, see our Privacy Statement.",
+7670-bin,101,"We use essential cookies to perform essential website functions, e.g",
+7670-bin,102,they're used to log you in.,
+7670-bin,103,Learn more,
+7670-bin,104,"We use analytics cookies to understand how you use our websites so we can make them better, e.g",
+7670-bin,105,they're used to gather information about the pages you visit and how many clicks you need to accomplish a task.,
+7670-bin,106,Learn more,
+7670-bin,107,Accept,
+7670-bin,108,Reject,

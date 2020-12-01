@@ -1,0 +1,48 @@
+7140-bin,1,hexo-inject:begin  hexo-inject:end,
+7140-bin,2,hexo-inject:begin  hexo-inject:end,
+7140-bin,3,SHACTF-2017-Growing Up-writeup,
+7140-bin,4,SHACTF-2017-Growing Up-writeup 单刷。,
+7140-bin,5,前言Growing Up这题题目如下1You remember the day you started hacking or playing CTF's? You can relive these days by playing our junior version,
+7140-bin,6,Just solve all challenges to get the flag ;-),
+7140-bin,7,CryptoAll about the Base (1)12345We found this encoded message,
+7140-bin,8,Can you decode it?V2VsbCBkb25lLAoKdGhpcyBmaWxlIGlzIGVuY3J5cHRlZCB3aXRoIEJhc2U2NC4gT2Z0ZW4gdXNlZCBpbiBDVEYncyB0byBkaXNwbGF5IGJpbmFyeSBkYXRhIGluIGEgbW9yZSBmcmllbmRseSB3YXkuIAoKVGhlIGZsYWcgZm9yIHRoaXMgY2hhbGxlbmdlIGlzIGZsYWd7YjNlOWMzZWVlNjA5YmFjNDZmYWQ0NDM5Y2YzMjFmZTV9Cg==,(I)
+7140-bin,9,"flag:123>>> import base64>>> base64.b64decode(""V2VsbCBkb25lLAoKdGhpcyBmaWxlIGlzIGVuY3J5cHRlZCB3aXRoIEJhc2U2NC4gT2Z0ZW4gdXNl ZCBpbiBDVEYncyB0byBkaXNwbGF5IGJpbmFyeSBkYXRhIGluIGEgbW9yZSBmcmllbmRseSB3YXku IAoKVGhlIGZsYWcgZm9yIHRoaXMgY2hhbGxlbmdlIGlzIGZsYWd7YjNlOWMzZWVlNjA5YmFjNDZm YWQ0NDM5Y2YzMjFmZTV9Cg=="")""Well done,\n\nthis file is encrypted with Base64",(A) 8
+7140-bin,10,Often used in CTF's to display binary data in a more friendly way,
+7140-bin,11,"\n\nThe flag for this challenge is flag{b3e9c3eee609bac46fad4439cf321fe5}\n""",(I)
+7140-bin,12,"Rotation (1)12Seems someone rotated the alphabet, can you get the original message back?Ykksy eua ckxk ghrk zu mkz znk zkdz hgiq",(A) 11
+7140-bin,13,凯撒1Seems you were able to get the text back,
+7140-bin,14,The flag is flag{30d3a1aa0cda9f08cdfa52668bc6854a},(I) 12
+7140-bin,15,"Substitute Teacher (2)1234Hello, my name is Mr",
+7140-bin,16,"Smith, I will be your substitute teacher for today",
+7140-bin,17,"I only have one assignment for you today, if you solve it you may go home",
+7140-bin,18,"Now be silence and solve it, so I can Netflix and chill!osvi cpm dprzsob ulsd hddsboeiou",
+7140-bin,19,"(2)1We found this strange text, can you get the original from it?",
+7140-bin,20,得到明文：1Well done,
+7140-bin,21,This text is encrypted with XOR with the single character '\x03',(I)
+7140-bin,22,XOR is often used in CTF challenges,
+7140-bin,23,We did use it in our teaser challenges 'Crypto Engine' and 'Website Attack',
+7140-bin,24,The flag of this challenge is: flag{a157d2b4eb73c60ff0cdbe2a2dea06c3},(I) 21
+7140-bin,25,Transposition (3)123We intercepted this secret message,(I)
+7140-bin,26,We believe it is using a transposition cipher,
+7140-bin,27,Can you decipher it?Citgoe6b0 oohern636 nni.tg1e2 gssThe58e rschii366aohess3ae tlafcf3dc uvllhl24f lilaaa730 aneglg506 tgnfl{33},
+7140-bin,28,"MiscZipfile One (1)1We received this zip file, but is asking for a password",(I)
+7140-bin,29,"All we know is that the password exists of 5 numbers, can you crack this password to get the hidden information?",(I) 28
+7140-bin,30,"Zipfile Two (2)1We received another zip file, which also requires a password",(I)
+7140-bin,31,All we know is that the password is an existing English word with a length of 6 and all lowercase,(I) 30
+7140-bin,32,Can you crack this password?,
+7140-bin,33,"Reverse (3)1We found this file on a server on the other side of the world, it looks weird, can you ""reverse"" it?",
+7140-bin,34,Wanna Buy A Flag? (2)打开后追踪TCP流，得到flag：1flag{f08574923ec9c9ffb47188e6edc1a20f},
+7140-bin,35,Captured Mail (4),(I)
+7140-bin,36,Flip A Coin (4)用IDA打开后，通过查看strings可以找到关键处。可以看到当v3==100，时会输出flag。,(I) 35
+7140-bin,37,Jump Around (4),
+7140-bin,38,"写个程序跑一下。12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152#include <iostream>#include <cstdio>#include <windows.h>using namespace std;int main(){    int v1[48];    __int64 v8 = 7523094288207667809LL;    __int64 v9 = 8101815670912281193LL;    __int64 v10 = 8680537053616894577LL;    __int64 v11 = 3833745473465776761LL;    __int64 v12 = 959985462;    __int64 v13 = 24929;    __int64 v2 = 6508264540403273223LL;    __int64 v3 = 5213490578399759196LL;    __int64 v4 = 5409190721146722066LL;    __int64 v5 = 73472674227045146LL;    __int64 v6 = 202114575;    __int64 v7 = 7173;    int i;    for ( i = 0; i <= 7; ++i ){        v1[i] = *((char *)&v2 + i) ^ *((char *)&v8 + i);        printf(""%c"",v1[i]);    }    for ( i = 0; i <= 7; ++i ){        v1[i] = *((char *)&v3 + i) ^ *((char *)&v9 + i);        printf(""%c"",v1[i]);    }    for ( i = 0; i <= 7; ++i ){        v1[i] = *((char *)&v4 + i) ^ *((char *)&v10 + i);        printf(""%c"",v1[i]);    }    for ( i = 0; i <= 7; ++i ){        v1[i] = *((char *)&v5 + i) ^ *((char *)&v11 + i);        printf(""%c"",v1[i]);    }    for ( i = 0; i <= 3; ++i ){        v1[i] = *((char *)&v6 + i) ^ *((char *)&v12 + i);        printf(""%c"",v1[i]);    }    for ( i = 0; i <= 1; ++i ){        v1[i] = *((char *)&v7 + i) ^ *((char *)&v13 + i);        printf(""%c"",v1[i]);    }   return 0;}",
+7140-bin,39,本文标题:SHACTF-2017-Growing Up-writeup,
+7140-bin,40,文章目录,
+7140-bin,41,Deleted File (3)4,
+7140-bin,42,Wanna Buy A Flag? (2)5.3,
+7140-bin,43,Captured Mail (4)6,
+7140-bin,44,Find The Flag (1)8.2,
+7140-bin,45,Flip A Coin (4)8.4,
+7140-bin,46,Jump Around (4),
+7140-bin,47,hexo-inject:begin  Begin: Injected MathJax,
+7140-bin,48,End: Injected MathJax,
