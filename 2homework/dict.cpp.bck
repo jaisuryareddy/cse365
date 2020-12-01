@@ -1,0 +1,249 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <iostream>
+#include <fstream>
+#include <map>
+#include <regex>
+#include <unistd.h>
+
+
+std::map<int, std::string> loadDict(int argc, char *argv[]){
+    std::map<int, std::string> dict;
+    std::fstream file;
+    std::string line;
+    //std::cout << "Argc: " << argc << "\n";
+    if( argc > 2 ){
+        if(strcmp(argv[1], "-d") == 0){
+            //std::cout << "Hereeee\n";
+            file.open(argv[2]);
+        }
+        if(strcmp(argv[1], "-p")== 0){
+            file.open("dictionary.txt");
+        }
+        if(strcmp(argv[1], "-s") == 0){
+            file.open("dictionary.txt");
+        }
+        //std::cout << "Here\n";
+    }
+    else if( argc == 2 || argc == 1){
+        file.open("dictionary.txt");
+    }
+    else{
+        file.open("dictionary.txt");
+    }
+
+    if(file.is_open()){
+        int counter = 0;
+        while(std::getline(file, line)){
+            dict.insert(std::pair<int, std::string>(counter, line));
+            counter++;
+            //std::cout << counter << "\n";
+        }
+    }
+    file.close();
+    return dict;
+}
+
+void countWords(std::map<int, std::string> dict, int argc, char *argv[]){
+    std::map<int, std::string>::iterator itr;
+    int count = 0;
+    for( itr = dict.begin(); itr != dict.end(); ++itr){
+        if(itr -> second.find(':') != std::string::npos){
+            count++;
+        }
+    }
+
+    if(argc > 2 && strcmp(argv[1], "-d") == 0){
+        std::cout << argv[2] << " has " << count << " words\n";
+    }
+    else{
+        std::cout << "dictionary.txt has " << count << " words\n";
+    }
+    
+
+}
+
+std::string findSub(std::string element, char c){
+    std::size_t pos = element.find(c);
+    return element.substr(0, pos);
+}
+
+
+void pSearch(std::map<int, std::string> dict, int argc, char* argv[]){
+    std::map<int, std::string>::iterator itr;
+    std::string word;
+    std::cout << "ARGC: " << argc << "\n";
+    if(argc == 5){
+        if(strcmp(argv[3], "-p") == 0){
+            std::cout << "HERE\n";
+            if(strcmp(argv[5],"-n") == 0){
+                int counter = 0;
+                int count = std::stoi(argv[6]);
+                if(count > dict.size()){
+                    count = dict.size();
+                }
+                for(itr = dict.begin(); itr != dict.end(); ++itr){
+                    word = findSub(itr -> second, ':');
+                    if((word.find(argv[4]) != std::string::npos) && (counter != count)){
+                        std::cout << itr -> second << "\n";
+                        counter++;
+                    }
+                }
+            }
+            else if(strcmp(argv[3], "-p") == 0){
+                std::cout << "AM HERE\n";
+                for(itr = dict.begin(); itr != dict.end(); ++itr){
+                    word = findSub(itr -> second, ':');
+                    if(word.find(argv[4]) != std::string::npos){
+                        std::cout << itr -> second <<"\n";
+                    }
+                }
+            }
+            
+        }
+        if(strcmp(argv[1], "-p") == 0){
+            if(strcmp(argv[3], "-n") == 0){
+                int counter = 0;
+                int count = std::stoi(argv[4]);
+                if(count > dict.size()){
+                    count = dict.size();
+                }
+                for(itr = dict.begin(); itr != dict.end(); ++itr){
+                    word = findSub(itr -> second, ':');
+                    if((word.find(argv[2]) != std::string::npos) && (counter != count)){
+                        std::cout << itr -> second << "\n";
+                        counter++;
+                    }
+
+                }
+            }
+        }
+    }
+    else{
+        if(strcmp(argv[1], "-p") == 0){
+            for(itr = dict.begin(); itr != dict.end(); ++itr){
+                word = findSub(itr -> second, ':');
+                if(word.find(argv[2]) != std::string::npos){
+                    std::cout << itr -> second << "\n";
+                }
+            }
+
+
+        }
+    }
+}
+
+void writeFile(std::map<int, std::string> dict, char *argv[]){
+    std::ofstream file;
+    if(strcmp(argv[1], "-d") == 0){
+        file.open(argv[2]);
+    }
+    else{
+        file.open("dictionary.txt");
+    }
+    //std::ofstream file("dictionary.txt");
+    std::map<int, std::string>::iterator itr;
+
+    if(file.is_open()){
+        for(itr = dict.begin(); itr != dict.end(); ++itr){
+            file << itr -> second << "\n";
+        }
+
+    }
+    file.close();
+
+}
+
+void wordReplace(std::map<int, std::string> dict, int argc, char *argv[]){
+    std::map<int, std::string>::iterator itr;
+    std::string word;
+    std::cout << "argc: " << argc << "\n";
+    if( argc <= 5 ){
+        if(strcmp(argv[1], "-s") == 0){
+            for(itr = dict.begin(); itr != dict.end(); ++itr){
+                itr -> second = std::regex_replace(itr -> second, std::regex(argv[2]), argv[4]);
+            }
+        }
+    }
+    else if(argc == 7){
+        for(itr = dict.begin(); itr != dict.end(); ++itr){
+            itr -> second = std::regex_replace(itr -> second, std::regex(argv[4]), argv[6]);
+        }
+    }
+    writeFile(dict, argv);
+
+}
+
+
+void spawnEditor(int argc, char* argv[]){
+
+
+    if(argc > 3){
+        char* args[] = {argv[2], argv[3], NULL};
+        execv(args[0], args);
+    }
+    if(argc == 3){
+        char defaultFile[] = "dictionary.txt";
+        char *args[] = {argv[2], defaultFile, NULL};
+        execv(args[0], args);
+    }
+
+}
+
+
+
+int main(int argc, char* argv[]){
+    std::map<int,std::string> dict;
+
+    //std::cout << "d: " << d << "\np: " << p << "\nn: " << n <<"\nr: " << r << "\ns: " << s << "\n";
+
+
+    if(argc > 1){
+        if(strcmp(argv[1], "-d") == 0){
+            dict = loadDict(argc, argv);
+            countWords(dict, argc, argv);
+            
+            if(argc > 3){
+                if(strcmp(argv[3], "-p") == 0){
+                    pSearch(dict, argc, argv);
+                }
+                if(strcmp(argv[3], "-s") == 0){
+                    std::cout << "Here in Main\n";
+                    wordReplace(dict, argc, argv);
+                }
+                
+            }
+        }
+        if(strcmp(argv[1],"-p") == 0){
+            //std::cout << "Here!!\n";
+            dict = loadDict(argc, argv);
+            countWords(dict, argc, argv);
+            pSearch(dict, argc, argv);
+
+        }
+        if(strcmp(argv[1], "-s") == 0){
+            std::cout << "HERE\n";
+            dict = loadDict(argc, argv);
+            countWords(dict, argc, argv);
+            wordReplace(dict, argc, argv);
+
+        }
+        if(strcmp(argv[1], "-v") == 0){
+            spawnEditor(argc, argv);
+        }
+        else{
+            //std::cout << "No\n";
+        }
+    }
+    else if(argc == 1){
+        dict = loadDict(argc, argv);
+        countWords(dict, argc, argv);
+    }
+    else{
+        std::cout << "Proper usage is: " << argv[0] << " <switch> <filename>\n";
+    }
+
+    
+
+}
