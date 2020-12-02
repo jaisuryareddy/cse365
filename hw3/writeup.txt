@@ -1,0 +1,33 @@
+1. Opened source code and copied the password from the the source code and was given a bash shell.
+2. Created a symlink and named it with the password, once running the program I was given a shell.
+3. Similar to 2, except now I added my home directory to the path
+4. Looked at source code for the pass, got it and ran program with it and was given an shell.
+5. Grabbed hashed MD5 from source code and reversed it online, got password and was given a shell.
+6. Found a value that when hashed will be a null byte, ran it, and got a shell.
+7. Honestly I just used the C code provided to pass this level.
+8. Created a symlink to .secret in my home directory and was able to get a shell.
+9. Symlink to .secret, same as 8, was able to get a shell.
+10. Set enviromnet variable BASE to expand to .secret
+11. Same as 10 but this time needed to bypass strcmp() by adding an extra / to the begining of the BASE path
+12. Same as 11 but no symlink.
+13. Set base to be a file I can control and during the 5 second sleep phase I swapped the filename to give me a shell.
+14. Command line injection, ./14 ";l33t" bash runs 14 then l33t
+15. Same as 14 but needed to escape the " this time
+16. Same as before but using $(l33t) instead
+17. Created a symlink called tidy that pointed to bin/sh to give me a shell
+18. Same as 17 but with executing l33t directly
+19. Command line injection escaping the $ with "\$(l33t)
+20. $ was filtered, so I useed && instead
+21. Same as 20
+22. Same as 20
+23. Same as 20
+24. Exploited -exec, needed bypass double quotes, got shell
+25. Same as 24 but without bypassing double quotes.
+26. Same as 24 but wasnt able to execute l33t directly so a symlink to l33t was used
+27. Ran program, took the address of give me a shell and brute forced it into giving me a shell
+28. Similar to 27 but Ghidra was used to find and overwrite the flag variable
+29. Similar to 28 but flag is now a global variable
+30. Injected a NOP sled and shellcode to give me a shell
+31. Overflowed the buffer of strcpy() to access is_god and was given a shell.
+32. This is where I stopped, got my assignment grade to something I was comfortable with and took the grade
+Thank you forr an amazing semster! I had a great time in this class and found it very interesting!
